@@ -1,26 +1,25 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../../redux/filterSlice";
-import styles from "./Filter.module.css";
+import { TextField, Box } from "@mui/material";
 
 const Filter = () => {
-  const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+  const filter = useSelector((state) => state.filter);
 
   const handleChange = (e) => {
     dispatch(setFilter(e.target.value));
   };
 
   return (
-    <label className={styles.label}>
-      Find contacts by name
-      <input
-        type="text"
+    <Box sx={{ mt: 2 }}>
+      <TextField
+        fullWidth
+        label="Find contacts by name"
         value={filter}
         onChange={handleChange}
-        className={styles.input}
       />
-    </label>
+    </Box>
   );
 };
 

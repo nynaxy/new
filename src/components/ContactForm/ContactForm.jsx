@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contactsSlice";
-import { nanoid } from "nanoid";
-import styles from "./ContactForm.module.css";
+import { TextField, Button, Box } from "@mui/material";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [errors, setErrors] = useState({});
-  const contacts = useSelector((state) => state.contacts);
+  const contacts = useSelector((state) => state.contacts.contacts);
   const dispatch = useDispatch();
 
   const validateName = (name) => {
@@ -54,41 +53,39 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ id: nanoid(), name, number }));
+    dispatch(addContact({ name, number }));
     setName("");
     setNumber("");
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <label className={styles.label}>
-        Name
-        <input
-          type="text"
-          name="name"
-          value={name}
-          onChange={handleChange}
-          className={styles.input}
-          required
-        />
-        {errors.name && <p className={styles.error}>{errors.name}</p>}
-      </label>
-      <label className={styles.label}>
-        Number
-        <input
-          type="tel"
-          name="number"
-          value={number}
-          onChange={handleChange}
-          className={styles.input}
-          required
-        />
-        {errors.number && <p className={styles.error}>{errors.number}</p>}
-      </label>
-      <button type="submit" className={styles.button}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+      <TextField
+        fullWidth
+        label="Name"
+        name="name"
+        value={name}
+        onChange={handleChange}
+        margin="normal"
+        error={Boolean(errors.name)}
+        helperText={errors.name}
+        required
+      />
+      <TextField
+        fullWidth
+        label="Number"
+        name="number"
+        value={number}
+        onChange={handleChange}
+        margin="normal"
+        error={Boolean(errors.number)}
+        helperText={errors.number}
+        required
+      />
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
         Add contact
-      </button>
-    </form>
+      </Button>
+    </Box>
   );
 };
 
